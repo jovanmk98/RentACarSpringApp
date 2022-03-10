@@ -21,28 +21,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-        .authorizeRequests()
-        .antMatchers("/", "/home", "assets/**"
-        , "/register").permitAll()
-        .anyRequest().authenticated()
-        .and().formLogin()
-        .loginPage("/login").permitAll()
-        .failureUrl("/login?error=BadCredentials")
-        .defaultSuccessUrl("/home", true)
-                .and()
-                .logout()
-                .logoutUrl("/logout")
-                .clearAuthentication(true)
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
-                .logoutSuccessUrl("/login")
-        .and()
-                .exceptionHandling().accessDeniedPage("/access_denied");
+            .authorizeRequests()
+            .antMatchers("/", "/home", "assets/**"
+                , "/register").permitAll()
+            .anyRequest().authenticated()
+            .and().formLogin()
+            .loginPage("/login").permitAll()
+            .failureUrl("/login?error=BadCredentials")
+            .defaultSuccessUrl("/home", true)
+            .and()
+            .logout()
+            .logoutUrl("/logout")
+            .clearAuthentication(true)
+            .invalidateHttpSession(true)
+            .deleteCookies("JSESSIONID")
+            .logoutSuccessUrl("/login")
+            .and()
+            .exceptionHandling().accessDeniedPage("/access_denied");
 
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(customUsernamePasswordAuthenticationProvider);
     }
 }

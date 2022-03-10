@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/register")
 public class RegisterController {
+
     private final UserService userService;
 
     @GetMapping
@@ -27,10 +28,10 @@ public class RegisterController {
 
     @PostMapping
     public String register(@RequestParam String username,
-                           @RequestParam String password,
-                           @RequestParam String repeatedPassword,
-                           @RequestParam String name,
-                           @RequestParam String surname) {
+        @RequestParam String password,
+        @RequestParam String repeatedPassword,
+        @RequestParam String name,
+        @RequestParam String surname) {
         try {
             this.userService.register(username, password, repeatedPassword, name, surname);
             return "redirect:/login";

@@ -9,6 +9,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.example.rentacarapp.model.CarRentalShop;
+import com.example.rentacarapp.model.User;
+import com.example.rentacarapp.model.excep.CarRentalNotFoundException;
+import com.example.rentacarapp.model.excep.UserNotFoundException;
 import com.example.rentacarapp.repository.CarRentalShopRepository;
 import com.example.rentacarapp.service.CarRentalShopService;
 import com.example.rentacarapp.utils.BaseTestData;
@@ -32,7 +35,7 @@ class CarRentalShopServiceImplTest extends BaseTestData {
     CarRentalShopService carRentalShopService;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         carRentalShopService = new CarRentalShopServiceImpl(carRentalShopRepository);
     }
 
@@ -66,7 +69,8 @@ class CarRentalShopServiceImplTest extends BaseTestData {
         CarRentalShop carRentalShop = getCarRentalShop();
 
         when(carRentalShopRepository.save(any(CarRentalShop.class))).thenReturn(carRentalShop);
-        CarRentalShop actual = carRentalShopService.addCarRentalShop(carRentalShop.getName(), carRentalShop.getCity(), carRentalShop.getAddress());
+        CarRentalShop actual = carRentalShopService.addCarRentalShop(carRentalShop.getName(), carRentalShop.getCity(),
+            carRentalShop.getAddress());
 
         assertThat(actual).isNotNull();
         assertThat(actual.getName()).isEqualTo(carRentalShop.getName());
@@ -94,10 +98,22 @@ class CarRentalShopServiceImplTest extends BaseTestData {
         when(carRentalShopRepository.findById(carRentalShop.getId())).thenReturn(Optional.of(carRentalShop));
         when(carRentalShopRepository.save(any(CarRentalShop.class))).thenReturn(carRentalShop);
 
-        carRentalShopService.update(carRentalShop.getId(), updateCarRentalShop.getName(), updateCarRentalShop.getCity(), updateCarRentalShop.getAddress());
+        carRentalShopService.update(carRentalShop.getId(), updateCarRentalShop.getName(), updateCarRentalShop.getCity(),
+            updateCarRentalShop.getAddress());
 
         assertThat(carRentalShop.getName()).isEqualTo(updateCarRentalShop.getName());
         assertThat(carRentalShop.getCity()).isEqualTo(updateCarRentalShop.getCity());
         assertThat(carRentalShop.getAddress()).isEqualTo(updateCarRentalShop.getAddress());
+    }
+
+    @Test
+    void shouldThrowCarRentalNotFoundException() {
+        CarRentalShop carRentalShop = getCarRentalShop();
+
+        when(carRentalShopRepository.findById(carRentalShop.getId())).thenReturn(Optional.empty());
+
+        assertThrows(CarRentalNotFoundException.class,
+            () -> carRentalShopService.update(carRentalShop.getId(), carRentalShop.getName(), carRentalShop.getCity(),
+                carRentalShop.getAddress()));
     }
 }

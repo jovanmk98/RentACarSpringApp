@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -37,7 +36,8 @@ public class CarController {
     }
 
     @GetMapping("/list/{id}")
-    public String getCarsFromCarRentalShop(@RequestParam(required = false) String error,@PathVariable Long id, Model model) {
+    public String getCarsFromCarRentalShop(@RequestParam(required = false) String error, @PathVariable Long id,
+        Model model) {
         if (error != null && !error.isEmpty()) {
             model.addAttribute("hasError", true);
             model.addAttribute("error", error);
@@ -47,19 +47,6 @@ public class CarController {
         model.addAttribute("carsList", carsList);
         return "car/carsPage";
     }
-
-//    @GetMapping("/addsalon")
-//    public String showFormForAdd(Model theModel) {
-//
-//        // create model attribute to bind form data
-//        AvtoSalon salon = new AvtoSalon();
-//
-//        theModel.addAttribute("salon", salon);
-//
-//        return "add-salon";
-//    }
-
-
 
     @PostMapping("/add")
     public String addCar(
@@ -77,25 +64,22 @@ public class CarController {
 
     @GetMapping("/addCar")
     public String showAddCarForm(Model theModel) {
-
-        // create model attribute to bind form data
         Car car = new Car();
 
         theModel.addAttribute("car", car);
-        List<CarRentalShop> carRentalShops=this.carRentalShopService.listAll();
-        theModel.addAttribute("carRentalShops",carRentalShops);
+        List<CarRentalShop> carRentalShops = this.carRentalShopService.listAll();
+        theModel.addAttribute("carRentalShops", carRentalShops);
         return "car/add-car";
     }
 
     @GetMapping("/editCar")
     public String showEditCarForm(Model theModel) {
 
-        // create model attribute to bind form data
         Car car = new Car();
 
         theModel.addAttribute("car", car);
-        List<CarRentalShop> carRentalShops=this.carRentalShopService.listAll();
-        theModel.addAttribute("carRentalShops",carRentalShops);
+        List<CarRentalShop> carRentalShops = this.carRentalShopService.listAll();
+        theModel.addAttribute("carRentalShops", carRentalShops);
         return "car/edit-car";
     }
 
@@ -105,17 +89,14 @@ public class CarController {
         return "redirect:/cars/list";
     }
 
-
-
     @GetMapping("/edit-form/{id}")
     public String editCar(@PathVariable Long id, Model model) {
-
         Car car = this.carService.findById(id).get();
-        model.addAttribute("car", car);
-        List<CarRentalShop> carRentalShops=this.carRentalShopService.listAll();
-        model.addAttribute("carRentalShops",carRentalShops);
-        return "car/edit-car";
 
+        model.addAttribute("car", car);
+        List<CarRentalShop> carRentalShops = this.carRentalShopService.listAll();
+        model.addAttribute("carRentalShops", carRentalShops);
+        return "car/edit-car";
 
     }
 
@@ -128,9 +109,8 @@ public class CarController {
         @RequestParam String image,
         @RequestParam Long carRental
     ) {
-        this.carService.update(id,name, price, year, horsePower, image, carRental);
+        this.carService.update(id, name, price, year, horsePower, image, carRental);
         return "redirect:/cars/list";
     }
-
 }
 

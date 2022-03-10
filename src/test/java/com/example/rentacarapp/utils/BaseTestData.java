@@ -9,7 +9,7 @@ import java.util.List;
 
 public class BaseTestData {
 
-    protected Car getCar(){
+    protected Car getCar() {
         List<CarRentalShop> carRentalShops = new ArrayList<>();
         CarRentalShop carRentalShop = getCarRentalShop();
         carRentalShops.add(carRentalShop);
@@ -24,7 +24,7 @@ public class BaseTestData {
             .build();
     }
 
-    protected Car getUpdateCar(){
+    protected Car getUpdateCar() {
         List<CarRentalShop> carRentalShops = new ArrayList<>();
         CarRentalShop carRentalShop = getUpdateCarRentalShop();
         carRentalShops.add(carRentalShop);
@@ -39,7 +39,7 @@ public class BaseTestData {
             .build();
     }
 
-    protected CarRentalShop getCarRentalShop(){
+    protected CarRentalShop getCarRentalShop() {
         return CarRentalShop.builder()
             .id(1L)
             .name("name")
@@ -48,7 +48,7 @@ public class BaseTestData {
             .build();
     }
 
-    protected CarRentalShop getUpdateCarRentalShop(){
+    protected CarRentalShop getUpdateCarRentalShop() {
         return CarRentalShop.builder()
             .name("update-name")
             .city("update-city")
@@ -56,7 +56,7 @@ public class BaseTestData {
             .build();
     }
 
-    protected User getUser(){
+    protected User getUser() {
         return User.builder()
             .name("name")
             .lastName("lastName")

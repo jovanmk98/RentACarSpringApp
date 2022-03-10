@@ -1,6 +1,5 @@
 package com.example.rentacarapp.controller;
 
-import com.example.rentacarapp.model.Car;
 import com.example.rentacarapp.model.CarRentalShop;
 import com.example.rentacarapp.service.CarRentalShopService;
 import java.util.List;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -43,9 +41,9 @@ public class CarRentalShopController {
         this.carRentalShopService.addCarRentalShop(name, city, address);
         return "redirect:/car-rental/list";
     }
+
     @GetMapping("/addCarRental")
     public String showAddCarRentalForm(Model theModel) {
-
         CarRentalShop carRentalShop = new CarRentalShop();
 
         theModel.addAttribute("carRentalShop", carRentalShop);
@@ -68,15 +66,13 @@ public class CarRentalShopController {
         this.carRentalShopService.update(id, name, city, address);
         return "redirect:/car-rental/list";
     }
+
     @GetMapping("/edit-form/{id}")
     public String editCarRental(@PathVariable Long id, Model model) {
-
         CarRentalShop carRental = this.carRentalShopService.findById(id).get();
         model.addAttribute("carRental", carRental);
 
         return "carRental/edit-car-rental";
-
-
     }
 
 }

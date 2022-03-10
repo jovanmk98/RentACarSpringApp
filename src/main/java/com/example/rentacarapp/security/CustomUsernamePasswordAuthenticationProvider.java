@@ -22,15 +22,15 @@ public class CustomUsernamePasswordAuthenticationProvider implements Authenticat
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
-        if ("".equals(username) || "".equals(password)){
+        if ("".equals(username) || "".equals(password)) {
             throw new BadCredentialsException("Invalid Credentials");
         }
         UserDetails userDetails = this.userService.loadUserByUsername(username);
-        if (!passwordEncoder.matches(password, userDetails.getPassword())){
+        if (!passwordEncoder.matches(password, userDetails.getPassword())) {
             throw new BadCredentialsException("Invalid");
         }
-        return new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
-
+        return new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(),
+            userDetails.getAuthorities());
 
     }
 

@@ -10,6 +10,9 @@ import static org.mockito.Mockito.when;
 
 import com.example.rentacarapp.model.Car;
 import com.example.rentacarapp.model.CarRentalShop;
+import com.example.rentacarapp.model.excep.CarNotFoundException;
+import com.example.rentacarapp.model.excep.CarRentalNotFoundException;
+import com.example.rentacarapp.repository.CarRentalShopRepository;
 import com.example.rentacarapp.repository.CarRepository;
 import com.example.rentacarapp.service.CarRentalShopService;
 import com.example.rentacarapp.service.CarService;
@@ -37,8 +40,11 @@ class CarServiceImplTest extends BaseTestData {
     @Mock
     CarRentalShopService carRentalShopService;
 
+    @Mock
+    CarRentalShopRepository carRentalShopRepository;
+
     @BeforeEach
-    void setup(){
+    void setup() {
         carService = new CarServiceImpl(carRepository, carRentalShopService);
     }
 
@@ -78,7 +84,8 @@ class CarServiceImplTest extends BaseTestData {
         when(carRentalShopService.findById(carRentalShop.getId())).thenReturn(Optional.of(carRentalShop));
         when(carRepository.save(any(Car.class))).thenReturn(car);
 
-        Car actual = carService.addCar(car.getName(),  car.getPrice(), car.getYear(), car.getHorsePower(), car.getImage(), carRentalShop.getId());
+        Car actual = carService.addCar(car.getName(), car.getPrice(), car.getYear(), car.getHorsePower(),
+            car.getImage(), carRentalShop.getId());
 
         assertThat(actual).isNotNull();
         assertThat(actual.getId()).isEqualTo(car.getId());
@@ -116,7 +123,8 @@ class CarServiceImplTest extends BaseTestData {
         when(carRepository.findById(car.getId())).thenReturn(Optional.of(car));
         when(carRepository.save(any(Car.class))).thenReturn(car);
 
-        carService.update(car.getId(), updatedCar.getName(), updatedCar.getPrice(), updatedCar.getYear(), updatedCar.getHorsePower(), updatedCar.getImage(), carRentalShop.getId());
+        carService.update(car.getId(), updatedCar.getName(), updatedCar.getPrice(), updatedCar.getYear(),
+            updatedCar.getHorsePower(), updatedCar.getImage(), carRentalShop.getId());
 
         assertThat(car.getName()).isEqualTo(updatedCar.getName());
         assertThat(car.getYear()).isEqualTo(updatedCar.getYear());
@@ -140,5 +148,31 @@ class CarServiceImplTest extends BaseTestData {
         List<Car> actual = carService.listCarsFromCarRentalShop(carRentalShop.getId());
 
         assertThat(actual.size()).isEqualTo(cars.size());
+    }
+
+    @Test
+    void shouldThrowCarRentalNotFoundExceptionWhenAddingCar() {
+        Car car = getCar();
+        CarRentalShop carRentalShop = getCarRentalShop();
+
+        when(carRentalShopRepository.findById(carRentalShop.getId())).thenReturn(Optional.empty());
+
+        assertThrows(
+            CarRentalNotFoundException.class,
+            () -> carService.addCar(car.getName(), car.getPrice(), car.getYear(), car.getHorsePower(), car.getImage(),
+                carRentalShop.getId()));
+    }
+
+    @Test
+    void shouldThrowCarNotFoundException() {
+        Car car = getCar();
+        CarRentalShop carRentalShop = getCarRentalShop();
+
+        when(carRepository.findById(car.getId())).thenReturn(Optional.empty());
+
+        assertThrows(
+            CarNotFoundException.class,
+            () -> carService.update(car.getId(), car.getName(), car.getPrice(), car.getYear(), car.getHorsePower(),
+                car.getImage(), carRentalShop.getId()));
     }
 }

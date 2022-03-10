@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/login")
 public class LoginController {
+
     private final UserService userService;
 
     @GetMapping
@@ -24,10 +25,10 @@ public class LoginController {
 
     @PostMapping
     public String login(HttpServletRequest request, Model model) {
-        User user = null;
+        User user;
         try {
             user = this.userService.login(request.getParameter("username"),
-                    request.getParameter("password"));
+                request.getParameter("password"));
             request.getSession().setAttribute("user", user);
             return "redirect:/home";
         } catch (InvalidInputException exception) {
