@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8"/>
     <title>Add product</title>
@@ -15,15 +16,11 @@
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
 </head>
-
 <body>
-
 <div class="container">
     <div class="row">
         <div class="col-md-5">
             <form action="/cars/add" method="POST">
-
-
                 <div class="form-group">
                     <label for="name">Име</label>
                     <input type="text"
@@ -42,7 +39,6 @@
                            name="price"
                            placeholder="Внеси Цена">
                 </div>
-
                 <div class="form-group">
                     <label for="name">Година</label>
                     <input type="text"
@@ -77,12 +73,10 @@
                     </select>
                 </div>
                 <button type="submit" class="btn btn-primary">Поднеси</button>
-
                 <a type="button" class="btn btn-primary" href="/cars/list">Назад</a>
             </form>
         </div>
     </div>
 </div>
-
 </body>
 </html>

@@ -2,7 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <link th:href="@{/styles/cssfiles/cars.css}" rel="stylesheet" />
+  <link th:href="@{/styles/cssfiles/cars.css}" rel="stylesheet"/>
   <title>Автомобили</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -60,7 +60,6 @@
   </th:block>
 </div>
 <div id="container">
-
   <div id="content">
     <table>
       <tr>
@@ -70,16 +69,12 @@
         <th>Коњски сили</th>
         <th>Слика</th>
         <th>Операции</th>
-
       </tr>
-
-
       <tr th:each="car : ${carsList}">
         <td th:text="${car.getName()}"></td>
         <td th:text="${car.getPrice()}"></td>
         <td th:text="${car.getYear()}"></td>
         <td th:text="${car.getHorsePower()}"></td>
-
         <td><img th:src="${car.getImage()}" width="180px" height="120px"/></td>
         <td>
           <th:block sec:authorize="hasRole('ROLE_ADMIN')">
@@ -92,20 +87,14 @@
                class="btn btn-sm btn-info"><i class="fa fa-trash">Измени</i></a>
           </th:block>
           <form th:action="@{'/shopping-cart/add-product/{id}' (id=${car.getId()})}" th:method="POST">
-            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-trash">Резервирај автомобил</i></button>
+            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-trash">Резервирај автомобил</i>
+            </button>
           </form>
-
-
         </td>
-
       </tr>
-
     </table>
-
   </div>
-
 </div>
-
 
 </body>
 
