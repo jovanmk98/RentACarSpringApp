@@ -80,4 +80,10 @@ public class CarServiceImpl implements CarService {
             .orElseThrow(() -> new CarRentalNotFoundException(id));
         return this.carRepository.findByCarRentalShopsContaining(carRentalShop);
     }
+
+    @Override
+    public int calculatePrice(Long id, String date) {
+        Car car = this.carRepository.findById(id).orElseThrow(()->new CarNotFoundException(id));
+        return 500;
+    }
 }

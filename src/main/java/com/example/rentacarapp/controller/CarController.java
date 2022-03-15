@@ -112,5 +112,18 @@ public class CarController {
         this.carService.update(id, name, price, year, horsePower, image, carRental);
         return "redirect:/cars/list";
     }
+
+    @GetMapping("/reserve/{id}")
+    public String reserveCar(@PathVariable Long id, Model model){
+        Car car = this.carService.findById(id).get();
+        model.addAttribute("car", car);
+        return "reserve-car";
+    }
+
+    @PostMapping("reserve")
+    public String reserveCar(@PathVariable Long id, @RequestParam String date){
+        this.carService.calculatePrice(id, date);
+        return "redirect:/shopping-cart";
+    }
 }
 
