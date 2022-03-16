@@ -1,5 +1,6 @@
 package com.example.rentacarapp.controller;
 
+import com.example.rentacarapp.model.Car;
 import com.example.rentacarapp.model.ShoppingCart;
 import com.example.rentacarapp.service.CarService;
 import com.example.rentacarapp.service.ShoppingCartService;
@@ -32,7 +33,7 @@ public class ShoppingCartController {
         }
         String username = req.getRemoteUser();
         ShoppingCart shoppingCart = this.shoppingCartService.getActiveShoppingCart(username);
-        model.addAttribute("products", this.shoppingCartService.listAllProducts(shoppingCart.getId()));
+        model.addAttribute("product", this.shoppingCartService.listAllProducts(shoppingCart.getId()));
         return "shopping-cart";
     }
 
@@ -46,9 +47,20 @@ public class ShoppingCartController {
             return "redirect:/shopping-cart?error=" + exception.getMessage();
         }
     }
-    @GetMapping("/add/gear/{id}")
+    @GetMapping("/add/date/{id}")
     public String showAddGear(@PathVariable Long id, Model model){
         model.addAttribute("id",id);
-        return "add-gear";
+        return "select-date";
+    }
+    @PostMapping("/date/{id}")
+    public String addGear(@PathVariable Long id,
+        @RequestParam(required = false) String dateFrom,
+        @RequestParam(required = false) String dateTo,
+        HttpServletRequest req){
+        String username = req.getRemoteUser();
+        Integer price = this.shoppingCartService.calculatePrice(id, dateFrom, dateTo);
+        Car car = this.shoppingCartService.findById(id,username).get();
+        car.setPrice(price);
+        return "redirect:/shopping-cart";
     }
 }

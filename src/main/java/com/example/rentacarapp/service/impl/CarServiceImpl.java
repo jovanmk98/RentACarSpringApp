@@ -29,18 +29,13 @@ public class CarServiceImpl implements CarService {
     public List<Car> listAll() {
         if (DataHolder.shoppingCarts != null) {
             if (!DataHolder.shoppingCarts.isEmpty()) {
-                List<Car> shoppingCartCars = DataHolder.shoppingCarts.get(0).getProducts();
+                Car shoppingCartCar= DataHolder.shoppingCarts.get(0).getProduct();
                 List<Car> cars = carRepository.findAll().stream().sorted(Comparator.comparing(Car::getName))
                     .collect(Collectors.toList());
 
                 List<Car> availableCars = new ArrayList<>();
                 cars.forEach(c -> {
-                    boolean flag = true;
-                    for (Car shoppingCar : shoppingCartCars){
-                        if (shoppingCar.getId().equals(c.getId())){
-                            flag = false;
-                        }
-                    }
+                    boolean flag = !shoppingCartCar.getId().equals(c.getId());
                     if (flag){
                         availableCars.add(c);
                     }
@@ -48,8 +43,6 @@ public class CarServiceImpl implements CarService {
                 return availableCars;
             }
         }
-
-
         return carRepository.findAll().stream().sorted(Comparator.comparing(Car::getName))
             .collect(Collectors.toList());
     }

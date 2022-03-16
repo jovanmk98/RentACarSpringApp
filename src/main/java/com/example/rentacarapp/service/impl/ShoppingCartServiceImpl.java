@@ -4,12 +4,18 @@ import com.example.rentacarapp.model.Car;
 import com.example.rentacarapp.model.ShoppingCart;
 import com.example.rentacarapp.model.ShoppingCartStatus;
 import com.example.rentacarapp.model.User;
+import com.example.rentacarapp.model.excep.CarNotFoundException;
 import com.example.rentacarapp.repository.ShoppingCartRepository;
 import com.example.rentacarapp.repository.UserRepository;
 import com.example.rentacarapp.service.CarService;
 import com.example.rentacarapp.service.ShoppingCartService;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +27,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final CarService carService;
     private final UserRepository userRepository;
 
-
     @Override
-    public List<Car> listAllProducts(Long cartId) {
-        return this.shoppingCartRepository.findById(cartId).get().getProducts();
+    public Car listAllProducts(Long cartId) {
+        return this.shoppingCartRepository.findById(cartId).get().getProduct();
     }
 
     @Override
@@ -45,9 +50,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ShoppingCart shoppingCart = this.getActiveShoppingCart(username);
         Car car = this.carService.findById(carId)
                 .orElseThrow();
-        List<Car> products=shoppingCart.getProducts();
-        if(!products.contains(car))
-            products.add(car);
+        shoppingCart.setProduct(car);
         return this.shoppingCartRepository.save(shoppingCart);
 
     }
@@ -55,6 +58,27 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public Optional<Car> findById(Long id, String username) {
         ShoppingCart shoppingCart = this.getActiveShoppingCart(username);
-        return shoppingCart.getProducts().stream().filter(i->i.getId().equals(id)).findFirst();
+        return Optional.of(shoppingCart.getProduct());
+    }
+
+    @Override
+    public Integer calculatePrice(Long id, String dateFrom, String dateTo) {
+        Car car = carService.findById(id).orElseThrow(()->new CarNotFoundException(id));
+        try {
+            long days = getDaysForReservation(dateFrom, dateTo);
+            return (int) (days * car.getPrice());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return car.getPrice();
+    }
+
+    private static long getDaysForReservation(String dateFrom, String dateTo) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
+        Date firstDate = sdf.parse(dateFrom);
+        Date secondDate = sdf.parse(dateTo);
+
+        long diffInMillies = Math.abs(secondDate.getTime() - firstDate.getTime());
+        return TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
     }
 }

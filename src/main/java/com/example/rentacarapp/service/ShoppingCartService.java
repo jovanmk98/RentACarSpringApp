@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ShoppingCartService {
-    List<Car> listAllProducts(Long cartId);
+    Car listAllProducts(Long cartId);
 
     ShoppingCart getActiveShoppingCart(String username);
 
@@ -14,5 +14,5 @@ public interface ShoppingCartService {
 
     Optional<Car> findById(Long id, String username);
 
-
+    Integer calculatePrice(Long id, String dateFrom, String dateTo);
 }
