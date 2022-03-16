@@ -29,9 +29,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCart getActiveShoppingCart(String username) {
-        User active = this.userRepository.findByEmail(username).orElse(null);
         return this.shoppingCartRepository
-                .findByUserAndStatus(active, ShoppingCartStatus.CREATED)
+                .findByUsernameAndStatus(username, ShoppingCartStatus.CREATED)
                 .orElseGet(() -> {
                     User user = this.userRepository.findByEmail(username)
                             .orElseThrow();

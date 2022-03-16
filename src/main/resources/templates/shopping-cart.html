@@ -73,6 +73,7 @@
                     <tbody>
                     <tr th:each="product : ${products}">
                         <td th:text="${product.getName()}"></td>
+                        <td th:text="${product.getPrice()}"></td>
                         <td th:text="${product.getHorsePower()}"></td>
                         <td><img th:src="${product.getImage()}" width="180px" height="120px"/></td>
                         <td>

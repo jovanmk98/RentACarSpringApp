@@ -2,6 +2,8 @@ package com.example.rentacarapp.service.impl;
 
 import com.example.rentacarapp.model.Car;
 import com.example.rentacarapp.model.CarRentalShop;
+import com.example.rentacarapp.model.DataHolder;
+import com.example.rentacarapp.model.ShoppingCart;
 import com.example.rentacarapp.model.excep.CarNotFoundException;
 import com.example.rentacarapp.model.excep.CarRentalNotFoundException;
 import com.example.rentacarapp.repository.CarRepository;
@@ -11,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +27,31 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public List<Car> listAll() {
-        return carRepository.findAll().stream().sorted(Comparator.comparing(Car::getName)).collect(Collectors.toList());
+        if (DataHolder.shoppingCarts != null) {
+            if (!DataHolder.shoppingCarts.isEmpty()) {
+                List<Car> shoppingCartCars = DataHolder.shoppingCarts.get(0).getProducts();
+                List<Car> cars = carRepository.findAll().stream().sorted(Comparator.comparing(Car::getName))
+                    .collect(Collectors.toList());
+
+                List<Car> availableCars = new ArrayList<>();
+                cars.forEach(c -> {
+                    boolean flag = true;
+                    for (Car shoppingCar : shoppingCartCars){
+                        if (shoppingCar.getId().equals(c.getId())){
+                            flag = false;
+                        }
+                    }
+                    if (flag){
+                        availableCars.add(c);
+                    }
+                });
+                return availableCars;
+            }
+        }
+
+
+        return carRepository.findAll().stream().sorted(Comparator.comparing(Car::getName))
+            .collect(Collectors.toList());
     }
 
     @Override

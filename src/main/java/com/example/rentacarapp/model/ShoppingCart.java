@@ -15,30 +15,20 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class ShoppingCart {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
 
     private LocalDateTime dateCreated;
 
-    @OneToOne(fetch = FetchType.LAZY)
     private User user;
 
-
-    @ManyToMany(fetch = FetchType.EAGER)
     private List<Car> products;
 
-
     private ShoppingCartStatus status;
-
 
     public ShoppingCart(User user) {
         this.id = (long) (Math.random() * 1000);

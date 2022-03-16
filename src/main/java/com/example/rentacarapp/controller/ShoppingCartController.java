@@ -40,7 +40,7 @@ public class ShoppingCartController {
     public String addProductToShoppingCart(@PathVariable Long id, HttpServletRequest req) {
         try {
             String username = req.getRemoteUser();
-            ShoppingCart shoppingCart = this.shoppingCartService.addProductToShoppingCart(username, id);
+            this.shoppingCartService.addProductToShoppingCart(username, id);
             return "redirect:/shopping-cart";
         } catch (RuntimeException exception) {
             return "redirect:/shopping-cart?error=" + exception.getMessage();
