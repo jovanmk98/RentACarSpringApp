@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface CarRepository extends JpaRepository<Car, Long> {
 
     List<Car> findByCarRentalShopsContaining(CarRentalShop carRentalShop);
+
+    List<Car> findAllByNameContaining(String name);
 }

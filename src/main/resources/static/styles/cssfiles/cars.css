@@ -12,6 +12,10 @@ table {
   width: 100%;
 }
 
+.i-search {
+  margin-bottom: 10px
+}
+
 th {
   border-bottom: 1px solid gray;
   background: none repeat scroll 0 0 #343a40;

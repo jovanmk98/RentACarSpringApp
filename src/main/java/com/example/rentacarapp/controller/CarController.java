@@ -24,13 +24,13 @@ public class CarController {
     private final CarRentalShopService carRentalShopService;
 
     @GetMapping("/list")
-    public String getCarsPage(@RequestParam(required = false) String error, Model model) {
+    public String getCarsPage(@RequestParam (required = false) String search, @RequestParam(required = false) String error, Model model) {
         if (error != null && !error.isEmpty()) {
             model.addAttribute("hasError", true);
             model.addAttribute("error", error);
         }
 
-        List<Car> carsList = this.carService.listAll();
+        List<Car> carsList = this.carService.listAll(search);
         model.addAttribute("carsList", carsList);
         return "car/carsPage";
     }

@@ -53,7 +53,7 @@ class CarServiceImplTest extends BaseTestData {
         Car car = getCar();
 
         when(carRepository.findAll()).thenReturn(Stream.of(car).collect(Collectors.toList()));
-        List<Car> cars = carService.listAll();
+        List<Car> cars = carService.listAll(car.getName());
 
         assertThat(cars.size()).isEqualTo(1);
     }

@@ -70,6 +70,9 @@
         <th>Слика</th>
         <th>Операции</th>
       </tr>
+
+      <form th:object="${car}" th:action="@{/cars/list}" method="get">
+        <input placeholder="Пребарај автомобил" type="search" name="search" id="search" class="i-search" th:value="${search}"/>
       <tr th:each="car : ${carsList}">
         <td th:text="${car.getName()}"></td>
         <td th:text="${car.getPrice()}"></td>
@@ -92,6 +95,7 @@
           </form>
         </td>
       </tr>
+      </form>
     </table>
   </div>
 </div>

@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface CarService {
 
-    List<Car> listAll();
+    List<Car> listAll(String name);
 
     Optional<Car> findById(Long id);
 

@@ -24,14 +24,22 @@ public class CarServiceImpl implements CarService {
     private final CarRentalShopService carRentalShopService;
 
     @Override
-    public List<Car> listAll() {
+    public List<Car> listAll(String name) {
         if (DataHolder.shoppingCarts != null) {
             if (!DataHolder.shoppingCarts.isEmpty()) {
-                Car shoppingCartCar = DataHolder.shoppingCarts.get(DataHolder.shoppingCarts.size()-1).getProduct();
+                Car shoppingCartCar = DataHolder.shoppingCarts.get(DataHolder.shoppingCarts.size() - 1)
+                    .getProduct();
                 if (shoppingCartCar != null) {
-                    List<Car> cars = carRepository.findAll().stream().sorted(Comparator.comparing(Car::getName))
+                    List<Car> cars = carRepository.findAll().stream()
+                        .filter(car -> car.getIsAvailable().equals(true))
+                        .sorted(Comparator.comparing(Car::getName))
                         .collect(Collectors.toList());
-
+                    if (name != null) {
+                        cars = carRepository.findAllByNameContaining(name).stream()
+                            .filter(car -> car.getIsAvailable().equals(true))
+                            .sorted(Comparator.comparing(Car::getName))
+                            .collect(Collectors.toList());
+                    }
                     List<Car> availableCars = new ArrayList<>();
                     if (!cars.isEmpty()) {
                         cars.forEach(c -> {
@@ -49,7 +57,13 @@ public class CarServiceImpl implements CarService {
                 }
             }
         }
-        return carRepository.findAll().stream().filter(car -> car.getIsAvailable().equals(true))
+        if (name == null) {
+            return carRepository.findAll().stream()
+                .filter(car -> car.getIsAvailable().equals(true))
+                .sorted(Comparator.comparing(Car::getName))
+                .collect(Collectors.toList());
+        }
+        return carRepository.findAllByNameContaining(name).stream().filter(car -> car.getIsAvailable().equals(true))
             .sorted(Comparator.comparing(Car::getName))
             .collect(Collectors.toList());
     }
@@ -106,7 +120,8 @@ public class CarServiceImpl implements CarService {
     public List<Car> listCarsFromCarRentalShop(Long id) {
         CarRentalShop carRentalShop = this.carRentalShopService.findById(id)
             .orElseThrow(() -> new CarRentalNotFoundException(id));
-        return this.carRepository.findByCarRentalShopsContaining(carRentalShop).stream().filter(car -> car.getIsAvailable().equals(true))
+        return this.carRepository.findByCarRentalShopsContaining(carRentalShop).stream()
+            .filter(car -> car.getIsAvailable().equals(true))
             .sorted(Comparator.comparing(Car::getName))
             .collect(Collectors.toList());
     }

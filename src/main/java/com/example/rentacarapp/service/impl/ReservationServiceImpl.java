@@ -18,7 +18,6 @@ import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -36,7 +35,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public Reservation save(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
-        ShoppingCart shoppingCart = DataHolder.shoppingCarts.get(DataHolder.shoppingCarts.size()-1);
+        ShoppingCart shoppingCart = DataHolder.shoppingCarts.get(DataHolder.shoppingCarts.size() - 1);
         Car car = shoppingCart.getProduct();
         Car changeCar = carService.findById(car.getId()).orElseThrow(() -> new CarNotFoundException(car.getId()));
         changeCar.setIsAvailable(false);
@@ -57,19 +56,21 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public List<Reservation> listAll(String username) {
         if (username.equals("admin@outlook.com")) {
-            return reservationRepository.findAllByReservationStatus(ReservationStatus.ACTIVE).stream().sorted(Comparator.comparing(Reservation::getReservationStatus)).collect(
-                Collectors.toList());
+            return reservationRepository.findAllByReservationStatus(ReservationStatus.ACTIVE).stream()
+                .sorted(Comparator.comparing(Reservation::getReservationStatus)).collect(
+                    Collectors.toList());
         }
         User user = userRepository.findByEmail(username).orElseThrow(() -> new UserNotFoundException(username));
-        return reservationRepository.findAllByUserAndReservationStatus(user, ReservationStatus.ACTIVE).stream().sorted(Comparator.comparing(Reservation::getReservationStatus)).collect(
-            Collectors.toList());
+        return reservationRepository.findAllByUserAndReservationStatus(user, ReservationStatus.ACTIVE).stream()
+            .sorted(Comparator.comparing(Reservation::getReservationStatus)).collect(
+                Collectors.toList());
     }
 
     @Scheduled(cron = "0 0 8 * * *")
     protected void checkForInactiveReservations() throws ParseException {
         List<Reservation> reservations = reservationRepository.findAll();
-        for (Reservation reservation : reservations){
-            if (checkReservationTime(reservation.getDateTo())){
+        for (Reservation reservation : reservations) {
+            if (checkReservationTime(reservation.getDateTo())) {
                 reservation.setReservationStatus(ReservationStatus.INACTIVE);
                 Car car = reservation.getCar();
                 car.setIsAvailable(true);
@@ -79,11 +80,11 @@ public class ReservationServiceImpl implements ReservationService {
         }
     }
 
-    private boolean checkReservationTime(String date)throws ParseException {
+    private boolean checkReservationTime(String date) throws ParseException {
         long currentTimeMillis = System.currentTimeMillis();
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 
         Date reservationDate = sdf.parse(date);
-        return currentTimeMillis>reservationDate.getTime();
+        return currentTimeMillis > reservationDate.getTime();
     }
 }
