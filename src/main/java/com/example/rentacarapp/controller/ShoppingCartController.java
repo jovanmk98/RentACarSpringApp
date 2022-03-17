@@ -53,7 +53,7 @@ public class ShoppingCartController {
         return "select-date";
     }
     @PostMapping("/date/{id}")
-    public String addGear(@PathVariable Long id,
+    public String selectDate(@PathVariable Long id,
         @RequestParam(required = false) String dateFrom,
         @RequestParam(required = false) String dateTo,
         HttpServletRequest req){

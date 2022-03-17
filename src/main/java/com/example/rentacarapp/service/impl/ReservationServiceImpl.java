@@ -5,6 +5,7 @@ import com.example.rentacarapp.model.DataHolder;
 import com.example.rentacarapp.model.Reservation;
 import com.example.rentacarapp.model.ShoppingCart;
 import com.example.rentacarapp.model.User;
+import com.example.rentacarapp.model.enumerations.ReservationStatus;
 import com.example.rentacarapp.model.excep.CarNotFoundException;
 import com.example.rentacarapp.model.excep.UserNotFoundException;
 import com.example.rentacarapp.repository.CarRepository;
@@ -12,8 +13,15 @@ import com.example.rentacarapp.repository.ReservationRepository;
 import com.example.rentacarapp.repository.UserRepository;
 import com.example.rentacarapp.service.CarService;
 import com.example.rentacarapp.service.ReservationService;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -39,12 +47,36 @@ public class ReservationServiceImpl implements ReservationService {
             .lastname(user.getLastName())
             .totalPrice(car.getPrice())
             .user(user)
+            .reservationStatus(ReservationStatus.ACTIVE)
             .build();
         return reservationRepository.save(reservation);
     }
 
     @Override
-    public List<Reservation> listAll() {
-        return reservationRepository.findAll();
+    public List<Reservation> listAll(String username) {
+        if (username.equals("admin@outlook.com")) {
+            return reservationRepository.findAll().stream().sorted(Comparator.comparing(Reservation::getReservationStatus)).collect(
+                Collectors.toList());
+        }
+        User user = userRepository.findByEmail(username).orElseThrow(() -> new UserNotFoundException(username));
+        return reservationRepository.findAllByUser(user).stream().sorted(Comparator.comparing(Reservation::getReservationStatus)).collect(
+            Collectors.toList());
+    }
+
+    @Scheduled(cron = "0/15 * * * * *")
+    protected void checkForInactiveReservations() {
+        List<Reservation> reservations = reservationRepository.findAll();
+//        for (Reservation reservation : reservations){
+//            if (checkReservationTime(reservation.g))
+//        }
+
+    }
+
+    private boolean checkReservationTime(String date)throws ParseException {
+        long currentTimeMillis = System.currentTimeMillis();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+
+        Date reservationDate = sdf.parse(date);
+        return currentTimeMillis>reservationDate.getTime();
     }
 }

@@ -1,6 +1,5 @@
 package com.example.rentacarapp.controller;
 
-import com.example.rentacarapp.model.Car;
 import com.example.rentacarapp.model.Reservation;
 import com.example.rentacarapp.service.ReservationService;
 import java.util.List;
@@ -27,13 +26,13 @@ public class ReservationController {
         return "redirect:/cars/list";
     }
     @GetMapping
-    public String getCarsPage(@RequestParam(required = false) String error, Model model) {
+    public String getCarsPage(@RequestParam(required = false) String error, Model model, HttpServletRequest req) {
         if (error != null && !error.isEmpty()) {
             model.addAttribute("hasError", true);
             model.addAttribute("error", error);
         }
-
-        List<Reservation> reservations = reservationService.listAll();
+        String username = req.getRemoteUser();
+        List<Reservation> reservations = reservationService.listAll(username);
         model.addAttribute("reservations", reservations);
         return "reservations";
     }

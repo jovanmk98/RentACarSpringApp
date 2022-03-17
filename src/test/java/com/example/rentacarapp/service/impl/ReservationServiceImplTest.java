@@ -52,7 +52,7 @@ class ReservationServiceImplTest extends BaseTestData {
         Reservation reservation = getReservation(user, car);
 
         when(reservationRepository.findAll()).thenReturn(Stream.of(reservation).collect(Collectors.toList()));
-        List<Reservation> reservations = reservationService.listAll();
+        List<Reservation> reservations = reservationService.listAll(user.getEmail());
 
         assertThat(reservations.size()).isEqualTo(1);
     }

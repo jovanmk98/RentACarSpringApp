@@ -4,7 +4,8 @@ import com.example.rentacarapp.model.Car;
 import com.example.rentacarapp.model.CarRentalShop;
 import com.example.rentacarapp.model.Reservation;
 import com.example.rentacarapp.model.ShoppingCart;
-import com.example.rentacarapp.model.ShoppingCartStatus;
+import com.example.rentacarapp.model.enumerations.ReservationStatus;
+import com.example.rentacarapp.model.enumerations.ShoppingCartStatus;
 import com.example.rentacarapp.model.User;
 import com.example.rentacarapp.model.enumerations.Role;
 import java.time.LocalDateTime;
@@ -79,16 +80,9 @@ public class BaseTestData {
             .lastname(user.getLastName())
             .totalPrice(100)
             .user(user)
+            .reservationStatus(ReservationStatus.ACTIVE)
             .id(1L)
             .car(car).build();
     }
 
-    protected ShoppingCart getShoppingCart(User user, Car car){
-        return ShoppingCart.builder()
-            .id(1L)
-            .user(user)
-            .product(car)
-            .status(ShoppingCartStatus.CREATED)
-            .dateCreated(LocalDateTime.now()).build();
-    }
 }

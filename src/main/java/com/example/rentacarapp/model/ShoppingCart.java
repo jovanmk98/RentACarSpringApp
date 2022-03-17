@@ -1,5 +1,6 @@
 package com.example.rentacarapp.model;
 
+import com.example.rentacarapp.model.enumerations.ShoppingCartStatus;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,6 +22,10 @@ public class ShoppingCart {
     private Car product;
 
     private ShoppingCartStatus status;
+
+    private String dateFrom;
+
+    private String dateTo;
 
     public ShoppingCart(User user) {
         this.id = (long) (Math.random() * 1000);

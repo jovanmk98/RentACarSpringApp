@@ -2,7 +2,7 @@ package com.example.rentacarapp.service.impl;
 
 import com.example.rentacarapp.model.Car;
 import com.example.rentacarapp.model.ShoppingCart;
-import com.example.rentacarapp.model.ShoppingCartStatus;
+import com.example.rentacarapp.model.enumerations.ShoppingCartStatus;
 import com.example.rentacarapp.model.User;
 import com.example.rentacarapp.model.excep.CarNotFoundException;
 import com.example.rentacarapp.repository.ShoppingCartRepository;

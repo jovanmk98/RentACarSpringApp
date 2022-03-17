@@ -7,6 +7,6 @@ public interface ReservationService {
 
     Reservation save(String username);
 
-    List<Reservation> listAll();
+    List<Reservation> listAll(String username);
 
 }

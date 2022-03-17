@@ -1,6 +1,10 @@
 package com.example.rentacarapp.model;
 
+import com.example.rentacarapp.model.enumerations.ReservationStatus;
+import com.example.rentacarapp.model.enumerations.Role;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,6 +31,9 @@ public class Reservation {
     private String lastname;
 
     private Integer totalPrice;
+
+    @Enumerated(value = EnumType.STRING)
+    private ReservationStatus reservationStatus;
 
     @ManyToOne
     private User user;
