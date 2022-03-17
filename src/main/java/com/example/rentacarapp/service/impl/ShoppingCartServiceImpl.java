@@ -1,6 +1,7 @@
 package com.example.rentacarapp.service.impl;
 
 import com.example.rentacarapp.model.Car;
+import com.example.rentacarapp.model.DataHolder;
 import com.example.rentacarapp.model.ShoppingCart;
 import com.example.rentacarapp.model.enumerations.ShoppingCartStatus;
 import com.example.rentacarapp.model.User;
@@ -63,6 +64,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public Integer calculatePrice(Long id, String dateFrom, String dateTo) {
         Car car = carService.findById(id).orElseThrow(() -> new CarNotFoundException(id));
+        ShoppingCart shoppingCart = DataHolder.shoppingCarts.get(DataHolder.shoppingCarts.size()-1);
+        shoppingCart.setDateFrom(dateFrom);
+        shoppingCart.setDateTo(dateTo);
         try {
             long days = getDaysForReservation(dateFrom, dateTo);
             return (int) (days * car.getPrice());

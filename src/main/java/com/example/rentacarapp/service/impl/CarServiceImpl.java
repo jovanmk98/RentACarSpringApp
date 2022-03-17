@@ -27,7 +27,7 @@ public class CarServiceImpl implements CarService {
     public List<Car> listAll() {
         if (DataHolder.shoppingCarts != null) {
             if (!DataHolder.shoppingCarts.isEmpty()) {
-                Car shoppingCartCar = DataHolder.shoppingCarts.get(0).getProduct();
+                Car shoppingCartCar = DataHolder.shoppingCarts.get(DataHolder.shoppingCarts.size()-1).getProduct();
                 if (shoppingCartCar != null) {
                     List<Car> cars = carRepository.findAll().stream().sorted(Comparator.comparing(Car::getName))
                         .collect(Collectors.toList());

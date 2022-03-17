@@ -36,7 +36,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public Reservation save(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
-        ShoppingCart shoppingCart = DataHolder.shoppingCarts.get(0);
+        ShoppingCart shoppingCart = DataHolder.shoppingCarts.get(DataHolder.shoppingCarts.size()-1);
         Car car = shoppingCart.getProduct();
         Car changeCar = carService.findById(car.getId()).orElseThrow(() -> new CarNotFoundException(car.getId()));
         changeCar.setIsAvailable(false);
@@ -46,6 +46,8 @@ public class ReservationServiceImpl implements ReservationService {
             .name(user.getName())
             .lastname(user.getLastName())
             .totalPrice(car.getPrice())
+            .dateFrom(shoppingCart.getDateFrom())
+            .dateTo(shoppingCart.getDateTo())
             .user(user)
             .reservationStatus(ReservationStatus.ACTIVE)
             .build();
@@ -55,21 +57,26 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public List<Reservation> listAll(String username) {
         if (username.equals("admin@outlook.com")) {
-            return reservationRepository.findAll().stream().sorted(Comparator.comparing(Reservation::getReservationStatus)).collect(
+            return reservationRepository.findAllByReservationStatus(ReservationStatus.ACTIVE).stream().sorted(Comparator.comparing(Reservation::getReservationStatus)).collect(
                 Collectors.toList());
         }
         User user = userRepository.findByEmail(username).orElseThrow(() -> new UserNotFoundException(username));
-        return reservationRepository.findAllByUser(user).stream().sorted(Comparator.comparing(Reservation::getReservationStatus)).collect(
+        return reservationRepository.findAllByUserAndReservationStatus(user, ReservationStatus.ACTIVE).stream().sorted(Comparator.comparing(Reservation::getReservationStatus)).collect(
             Collectors.toList());
     }
 
-    @Scheduled(cron = "0/15 * * * * *")
-    protected void checkForInactiveReservations() {
+    @Scheduled(cron = "0 0 8 * * *")
+    protected void checkForInactiveReservations() throws ParseException {
         List<Reservation> reservations = reservationRepository.findAll();
-//        for (Reservation reservation : reservations){
-//            if (checkReservationTime(reservation.g))
-//        }
-
+        for (Reservation reservation : reservations){
+            if (checkReservationTime(reservation.getDateTo())){
+                reservation.setReservationStatus(ReservationStatus.INACTIVE);
+                Car car = reservation.getCar();
+                car.setIsAvailable(true);
+                carRepository.save(car);
+                reservationRepository.save(reservation);
+            }
+        }
     }
 
     private boolean checkReservationTime(String date)throws ParseException {

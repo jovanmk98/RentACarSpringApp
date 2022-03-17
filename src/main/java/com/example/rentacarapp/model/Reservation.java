@@ -41,4 +41,8 @@ public class Reservation {
     @OneToOne
     private Car car;
 
+    private String dateFrom;
+
+    private String dateTo;
+
 }
