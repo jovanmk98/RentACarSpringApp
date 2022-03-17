@@ -65,21 +65,25 @@
                     <tr>
                         <th scope="col">Автомобил</th>
                         <th scope="col">Цена</th>
-                        <th scope="col">Којнски сили</th>
                         <th scope="col">Слика</th>
-                        <th scope="col">Опрема</th>
+                        <th scope="col">Датум</th>
+                        <th scope="col">Резервација</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
                         <td th:text="${product.getName()}"></td>
                         <td th:text="${product.getPrice()}"></td>
-                        <td th:text="${product.getHorsePower()}"></td>
                         <td><img th:src="${product.getImage()}" width="180px" height="120px"/></td>
                         <td>
                             <form method="GET" th:action="@{'shopping-cart/add/date/{id}' (id=${product.getId()})}">
-                                <input type="submit" class="btn btn-info" value="Додај опрема">
+                                <input type="submit" class="btn btn-info" value="Одбери датум">
                             </form>
+                        </td>
+                        <td><form th:action="@{'/reservation'}" th:method="POST">
+                            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-trash">Резервирај автомобил</i>
+                            </button>
+                        </form>
                         </td>
                     </tr>
                     </tbody>

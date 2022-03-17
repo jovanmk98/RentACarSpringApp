@@ -12,7 +12,6 @@ import com.example.rentacarapp.service.ShoppingCartService;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -35,13 +34,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCart getActiveShoppingCart(String username) {
         return this.shoppingCartRepository
-                .findByUsernameAndStatus(username, ShoppingCartStatus.CREATED)
-                .orElseGet(() -> {
-                    User user = this.userRepository.findByEmail(username)
-                            .orElseThrow();
-                    ShoppingCart shoppingCart = new ShoppingCart(user);
-                    return this.shoppingCartRepository.save(shoppingCart);
-                });
+            .findByUsernameAndStatus(username, ShoppingCartStatus.CREATED)
+            .orElseGet(() -> {
+                User user = this.userRepository.findByEmail(username)
+                    .orElseThrow();
+                ShoppingCart shoppingCart = new ShoppingCart(user);
+                return this.shoppingCartRepository.save(shoppingCart);
+            });
 
     }
 
@@ -49,7 +48,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public ShoppingCart addProductToShoppingCart(String username, Long carId) {
         ShoppingCart shoppingCart = this.getActiveShoppingCart(username);
         Car car = this.carService.findById(carId)
-                .orElseThrow();
+            .orElseThrow();
         shoppingCart.setProduct(car);
         return this.shoppingCartRepository.save(shoppingCart);
 
@@ -63,7 +62,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public Integer calculatePrice(Long id, String dateFrom, String dateTo) {
-        Car car = carService.findById(id).orElseThrow(()->new CarNotFoundException(id));
+        Car car = carService.findById(id).orElseThrow(() -> new CarNotFoundException(id));
         try {
             long days = getDaysForReservation(dateFrom, dateTo);
             return (int) (days * car.getPrice());

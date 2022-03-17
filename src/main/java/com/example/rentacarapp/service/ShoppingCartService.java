@@ -2,10 +2,10 @@ package com.example.rentacarapp.service;
 
 import com.example.rentacarapp.model.Car;
 import com.example.rentacarapp.model.ShoppingCart;
-import java.util.List;
 import java.util.Optional;
 
 public interface ShoppingCartService {
+
     Car listAllProducts(Long cartId);
 
     ShoppingCart getActiveShoppingCart(String username);

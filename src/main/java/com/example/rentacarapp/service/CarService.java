@@ -17,6 +17,4 @@ public interface CarService {
     void update(Long id, String name, Integer price, Integer year, Integer horsepower, String image, Long carRental);
 
     List<Car> listCarsFromCarRentalShop(Long id);
-
-    int calculatePrice(Long id, String date);
 }

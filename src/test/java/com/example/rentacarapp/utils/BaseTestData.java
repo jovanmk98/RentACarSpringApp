@@ -2,8 +2,12 @@ package com.example.rentacarapp.utils;
 
 import com.example.rentacarapp.model.Car;
 import com.example.rentacarapp.model.CarRentalShop;
+import com.example.rentacarapp.model.Reservation;
+import com.example.rentacarapp.model.ShoppingCart;
+import com.example.rentacarapp.model.ShoppingCartStatus;
 import com.example.rentacarapp.model.User;
 import com.example.rentacarapp.model.enumerations.Role;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +23,7 @@ public class BaseTestData {
             .price(123)
             .year(2000)
             .horsePower(145)
+            .isAvailable(true)
             .image("image")
             .carRentalShops(carRentalShops)
             .build();
@@ -35,6 +40,7 @@ public class BaseTestData {
             .year(2001)
             .horsePower(146)
             .image("update-image")
+            .isAvailable(true)
             .carRentalShops(carRentalShops)
             .build();
     }
@@ -65,5 +71,24 @@ public class BaseTestData {
             .id(1L)
             .role(Role.ROLE_ADMIN)
             .build();
+    }
+
+    protected Reservation getReservation(User user, Car car){
+        return Reservation.builder()
+            .name(user.getName())
+            .lastname(user.getLastName())
+            .totalPrice(100)
+            .user(user)
+            .id(1L)
+            .car(car).build();
+    }
+
+    protected ShoppingCart getShoppingCart(User user, Car car){
+        return ShoppingCart.builder()
+            .id(1L)
+            .user(user)
+            .product(car)
+            .status(ShoppingCartStatus.CREATED)
+            .dateCreated(LocalDateTime.now()).build();
     }
 }

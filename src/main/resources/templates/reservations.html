@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-  <link th:href="@{/styles/cssfiles/home.css}" rel="stylesheet"/>
-  <meta charset="utf-8">
-  <title>Автосалон</title>
+  <link th:href="@{/styles/cssfiles/car-rental.css}" rel="stylesheet"/>
+  <title>Продавници</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -16,23 +16,22 @@
           integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
           crossorigin="anonymous"></script>
 </head>
+
 <body>
+<div th:if="${hasError}">
+  <h5 class="text-center text-danger" th:text="${error}"></h5>
+</div>
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
   <div class="container">
     <div class="collapse navbar-collapse justify-content-end" id="navbarsExampleDefault">
       <ul class="navbar-nav m-auto">
-        <span style="font-size: 40px; padding-left: 20px;" class="navbar-brand">Car Rental</span>
+        <span style="font-size: 30px" class="navbar-brand"><a style="font-size: 40px" class="btn btn-dark" href="/home">Почетна</a></span>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li class="nav-item" sec:authorize="isAuthenticated()">
           <a class="nav-link" href="#">
             <th:block th:if="${#request.getRemoteUser() != null}"
                       th:text="${#request.getRemoteUser()}"></th:block>
-          </a>
-        </li>
-        <li class="nav-item" sec:authorize="isAuthenticated()">
-          <a class="btn btn-success btn-sm ml-3" href="/shopping-cart">
-            <i class="fa fa-shopping-cart"></i> Кошничка
           </a>
         </li>
         <li class="nav-item" sec:authorize="isAuthenticated()">
@@ -49,26 +48,27 @@
     </div>
   </div>
 </nav>
-<div id="content">
-  <div>
+<br>
+<div id="container">
+  <div id="content">
     <table>
       <tr>
-        <th><a href="/cars/list" class="btn btn-sm btn-dark">
-          <div style="font-size: 25px">Автомобили</div>
-        </a></th>
-        <th><a href="/car-rental/list" class="btn btn-sm btn-dark">
-          <div style="font-size: 25px">Продавници</div>
-        </a></th>
-        <th:block sec:authorize="hasRole('ROLE_ADMIN')">
-          <th><a href="/reservation" class="btn btn-sm btn-dark">
-            <div style="font-size: 25px">Резервации</div>
-          </a></th>
-        </th:block>
+        <th>Име</th>
+        <th>Презиме</th>
+        <th>Автомобил</th>
+        <th>Вкупна цена</th>
+      </tr>
+      <tr th:each="reservation : ${reservations}">
+        <td th:text="${reservation.getName()}"></td>
+        <td th:text="${reservation.getLastname()}"></td>
+        <td th:text="${reservation.getCar().getName()}"></td>
+        <td th:text="${reservation.getTotalPrice()}"></td>
       </tr>
     </table>
   </div>
 </div>
 </body>
+
 </html>
 
 

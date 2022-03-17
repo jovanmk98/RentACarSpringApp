@@ -1,11 +1,10 @@
 package com.example.rentacarapp.model;
 
-import java.time.LocalDateTime;
-import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,15 +26,9 @@ public class Reservation {
 
     private String lastname;
 
-    private String dateOfBirth;
-
-    private Integer days;
-
     private Integer totalPrice;
 
-    private LocalDateTime dateCreated;
-
-    @OneToOne
+    @ManyToOne
     private User user;
 
     @OneToOne

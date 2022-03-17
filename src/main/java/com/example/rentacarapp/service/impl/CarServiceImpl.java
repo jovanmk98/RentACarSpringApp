@@ -3,7 +3,6 @@ package com.example.rentacarapp.service.impl;
 import com.example.rentacarapp.model.Car;
 import com.example.rentacarapp.model.CarRentalShop;
 import com.example.rentacarapp.model.DataHolder;
-import com.example.rentacarapp.model.ShoppingCart;
 import com.example.rentacarapp.model.excep.CarNotFoundException;
 import com.example.rentacarapp.model.excep.CarRentalNotFoundException;
 import com.example.rentacarapp.repository.CarRepository;
@@ -13,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,21 +27,30 @@ public class CarServiceImpl implements CarService {
     public List<Car> listAll() {
         if (DataHolder.shoppingCarts != null) {
             if (!DataHolder.shoppingCarts.isEmpty()) {
-                Car shoppingCartCar= DataHolder.shoppingCarts.get(0).getProduct();
-                List<Car> cars = carRepository.findAll().stream().sorted(Comparator.comparing(Car::getName))
-                    .collect(Collectors.toList());
+                Car shoppingCartCar = DataHolder.shoppingCarts.get(0).getProduct();
+                if (shoppingCartCar != null) {
+                    List<Car> cars = carRepository.findAll().stream().sorted(Comparator.comparing(Car::getName))
+                        .collect(Collectors.toList());
 
-                List<Car> availableCars = new ArrayList<>();
-                cars.forEach(c -> {
-                    boolean flag = !shoppingCartCar.getId().equals(c.getId());
-                    if (flag){
-                        availableCars.add(c);
+                    List<Car> availableCars = new ArrayList<>();
+                    if (!cars.isEmpty()) {
+                        cars.forEach(c -> {
+
+                            boolean flag = !shoppingCartCar.getId().equals(c.getId());
+                            if (flag) {
+                                availableCars.add(c);
+                            }
+
+                        });
+                        return availableCars.stream().filter(car -> car.getIsAvailable().equals(true))
+                            .sorted(Comparator.comparing(Car::getName))
+                            .collect(Collectors.toList());
                     }
-                });
-                return availableCars;
+                }
             }
         }
-        return carRepository.findAll().stream().sorted(Comparator.comparing(Car::getName))
+        return carRepository.findAll().stream().filter(car -> car.getIsAvailable().equals(true))
+            .sorted(Comparator.comparing(Car::getName))
             .collect(Collectors.toList());
     }
 
@@ -65,6 +72,7 @@ public class CarServiceImpl implements CarService {
             .year(year)
             .horsePower(horsepower)
             .carRentalShops(carRentalShops)
+            .isAvailable(true)
             .image(image).build();
 
         return carRepository.save(car);
@@ -98,12 +106,8 @@ public class CarServiceImpl implements CarService {
     public List<Car> listCarsFromCarRentalShop(Long id) {
         CarRentalShop carRentalShop = this.carRentalShopService.findById(id)
             .orElseThrow(() -> new CarRentalNotFoundException(id));
-        return this.carRepository.findByCarRentalShopsContaining(carRentalShop);
-    }
-
-    @Override
-    public int calculatePrice(Long id, String date) {
-        Car car = this.carRepository.findById(id).orElseThrow(()->new CarNotFoundException(id));
-        return 500;
+        return this.carRepository.findByCarRentalShopsContaining(carRentalShop).stream().filter(car -> car.getIsAvailable().equals(true))
+            .sorted(Comparator.comparing(Car::getName))
+            .collect(Collectors.toList());
     }
 }

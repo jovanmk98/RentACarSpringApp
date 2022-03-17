@@ -33,6 +33,8 @@ public class Car {
 
     private String image;
 
+    private Boolean isAvailable;
+
     @ManyToMany(fetch = FetchType.EAGER)
     private List<CarRentalShop> carRentalShops;
 
