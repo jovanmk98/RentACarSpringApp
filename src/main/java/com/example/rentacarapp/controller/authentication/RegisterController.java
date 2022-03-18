@@ -1,6 +1,8 @@
 package com.example.rentacarapp.controller.authentication;
 
+import com.example.rentacarapp.model.excep.InvalidEmailException;
 import com.example.rentacarapp.model.excep.InvalidInputException;
+import com.example.rentacarapp.model.excep.PasswordsDoNotMatchException;
 import com.example.rentacarapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -35,7 +37,7 @@ public class RegisterController {
         try {
             this.userService.register(username, password, repeatedPassword, name, surname);
             return "redirect:/login";
-        } catch (InvalidInputException exception) {
+        } catch (InvalidInputException | PasswordsDoNotMatchException | InvalidEmailException exception) {
             return "redirect:/register?error=" + exception.getMessage();
         }
     }

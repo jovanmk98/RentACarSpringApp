@@ -34,13 +34,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public User register(String email, String password, String repeatPassword, String name, String lastName) {
 
-        if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
-            throw new InvalidInputException();
-        }
+        checkIfFieldsAreValid(email, password, repeatPassword, name, lastName);
+
         checkIfEmailIsValid(email);
-        if (!password.equals(repeatPassword)) {
-            throw new PasswordsDoNotMatchException(password, repeatPassword);
-        }
         if (userRepository.findByEmail(email).isPresent()){
             throw new EmailAlreadyExistsException(email);
         }
@@ -62,6 +58,27 @@ public class UserServiceImpl implements UserService {
         Matcher matcher = pattern.matcher(email);
         if(!matcher.matches()){
             throw new InvalidEmailException(email);
+        }
+    }
+
+    private static void checkIfFieldsAreValid(String email, String password, String repeatPassword, String name, String lastName){
+        if (email.isEmpty()){
+            throw new InvalidInputException("email");
+        }
+        if (password.isEmpty()){
+            throw new InvalidInputException("password");
+        }
+        if (repeatPassword.isEmpty()){
+            throw new InvalidInputException("repeatPassword");
+        }
+        if (name.isEmpty()){
+            throw new InvalidInputException("name");
+        }
+        if (lastName.isEmpty()){
+            throw new InvalidInputException("lastName");
+        }
+        if (!password.equals(repeatPassword)) {
+            throw new PasswordsDoNotMatchException();
         }
     }
 }

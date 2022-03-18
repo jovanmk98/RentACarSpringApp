@@ -1,7 +1,7 @@
 package com.example.rentacarapp.service.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
@@ -49,11 +49,21 @@ class CarServiceImplTest extends BaseTestData {
     }
 
     @Test
-    void listAll() {
+    void listAllWithSearch() {
+        Car car = getCar();
+
+        when(carRepository.findAllByNameContaining(car.getName())).thenReturn(Stream.of(car).collect(Collectors.toList()));
+        List<Car> cars = carService.listAll(car.getName());
+
+        assertThat(cars.size()).isEqualTo(1);
+    }
+
+    @Test
+    void listWithoutSearch() {
         Car car = getCar();
 
         when(carRepository.findAll()).thenReturn(Stream.of(car).collect(Collectors.toList()));
-        List<Car> cars = carService.listAll(car.getName());
+        List<Car> cars = carService.listAll(null);
 
         assertThat(cars.size()).isEqualTo(1);
     }

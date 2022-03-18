@@ -2,7 +2,7 @@ package com.example.rentacarapp.model.excep;
 
 public class InvalidInputException extends RuntimeException {
 
-    public InvalidInputException() {
-        super("Invalid input");
+    public InvalidInputException(String text) {
+        super("%s cannot be empty");
     }
 }

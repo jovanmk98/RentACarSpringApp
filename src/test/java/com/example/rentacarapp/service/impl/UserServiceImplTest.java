@@ -1,13 +1,9 @@
 package com.example.rentacarapp.service.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.junit.jupiter.api.Assertions.*;
 
 import com.example.rentacarapp.model.User;
 import com.example.rentacarapp.model.excep.EmailNotFoundException;
@@ -29,7 +25,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 class UserServiceImplTest extends BaseTestData {
 
-    private static String REPEAT_PASSWORD="password";
+    private static final String REPEAT_PASSWORD = "password";
 
     @Mock
     private UserRepository userRepository;
@@ -41,7 +37,7 @@ class UserServiceImplTest extends BaseTestData {
     PasswordEncoder passwordEncoder;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         userService = new UserServiceImpl(userRepository, passwordEncoder);
     }
 
@@ -65,9 +61,10 @@ class UserServiceImplTest extends BaseTestData {
 
         when(userRepository.save(any(User.class))).thenReturn(user);
 
-        User actual = userService.register(user.getEmail(), user.getPassword(), REPEAT_PASSWORD, user.getName(), user.getLastName());
+        User actual = userService.register(user.getEmail(), user.getPassword(), REPEAT_PASSWORD, user.getName(),
+            user.getLastName());
 
-//        assertThat(actual).isNotNull();
+        assertThat(actual).isNotNull();
         assertThat(actual.getId()).isEqualTo(user.getId());
         assertThat(actual.getEmail()).isEqualTo(user.getEmail());
         assertThat(actual.getName()).isEqualTo(user.getName());
@@ -89,7 +86,7 @@ class UserServiceImplTest extends BaseTestData {
     }
 
     @Test
-    void shouldThrowUserNotFoundException(){
+    void shouldThrowUserNotFoundException() {
         User user = getUser();
 
         when(userRepository.findByEmailAndPassword(user.getEmail(), user.getPassword())).thenReturn(Optional.empty());
@@ -98,22 +95,26 @@ class UserServiceImplTest extends BaseTestData {
     }
 
     @Test
-    void shouldThrowInvalidInputExceptionWhenEmailIsEmpty(){
+    void shouldThrowInvalidInputExceptionWhenEmailIsEmpty() {
         User user = getUser();
         user.setEmail("");
 
-        assertThrows(InvalidInputException.class, () -> userService.register(user.getEmail(), user.getPassword(), REPEAT_PASSWORD, user.getName(), user.getLastName()));
+        assertThrows(InvalidInputException.class,
+            () -> userService.register(user.getEmail(), user.getPassword(), REPEAT_PASSWORD, user.getName(),
+                user.getLastName()));
     }
 
     @Test
-    void shouldThrowPasswordsDoNotMatchExceptionWhenPasswordsDoNotMatch(){
+    void shouldThrowPasswordsDoNotMatchExceptionWhenPasswordsDoNotMatch() {
         User user = getUser();
 
-        assertThrows(PasswordsDoNotMatchException.class, () -> userService.register(user.getEmail(), user.getPassword(), REPEAT_PASSWORD+".", user.getName(), user.getLastName()));
+        assertThrows(PasswordsDoNotMatchException.class,
+            () -> userService.register(user.getEmail(), user.getPassword(), REPEAT_PASSWORD + ".", user.getName(),
+                user.getLastName()));
     }
 
     @Test
-    void shouldThrowEmailNotFoundException(){
+    void shouldThrowEmailNotFoundException() {
         User user = getUser();
 
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.empty());

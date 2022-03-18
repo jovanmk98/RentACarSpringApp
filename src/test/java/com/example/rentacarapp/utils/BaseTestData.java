@@ -85,4 +85,17 @@ public class BaseTestData {
             .car(car).build();
     }
 
+    protected ShoppingCart getShoppingCart(){
+        User user = getUser();
+        Car car = getCar();
+        return ShoppingCart.builder()
+            .id(1L)
+            .dateFrom("10/03/2022")
+            .dateTo("20/03/2022")
+            .user(user)
+            .product(car)
+            .status(ShoppingCartStatus.CREATED)
+            .build();
+    }
+
 }

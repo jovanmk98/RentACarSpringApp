@@ -2,7 +2,6 @@ package com.example.rentacarapp.service.impl;
 
 import com.example.rentacarapp.model.CarRentalShop;
 import com.example.rentacarapp.model.excep.CarRentalNotFoundException;
-import com.example.rentacarapp.model.excep.InvalidInputException;
 import com.example.rentacarapp.repository.CarRentalShopRepository;
 import com.example.rentacarapp.service.CarRentalShopService;
 import java.util.Comparator;
@@ -45,7 +44,8 @@ public class CarRentalShopServiceImpl implements CarRentalShopService {
 
     @Override
     public void update(Long id, String name, String city, String address) {
-        CarRentalShop carRentalShop= this.carRentalShopRepository.findById(id).orElseThrow(()->new CarRentalNotFoundException(id));
+        CarRentalShop carRentalShop = this.carRentalShopRepository.findById(id)
+            .orElseThrow(() -> new CarRentalNotFoundException(id));
 
         carRentalShop.setName(name);
         carRentalShop.setAddress(address);

@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
+
     List<Reservation> findAllByUserAndReservationStatus(User user, ReservationStatus reservationStatus);
+
     List<Reservation> findAllByReservationStatus(ReservationStatus reservationStatus);
 }
