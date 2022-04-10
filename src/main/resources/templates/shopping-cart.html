@@ -19,7 +19,7 @@
 <body>
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" style="font-size: 40px;" href="/home">Авто Салон</a>
+        <a class="navbar-brand" style="font-size: 40px;" href="/home">Авто Car Shop</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
                 aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -28,16 +28,16 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarsExampleDefault">
             <ul class="navbar-nav m-auto">
                 <li class="nav-item m-auto">
-                    <a style="font-size: 30px;"class="nav-link active" href="/home">Почетна</a>
+                    <a style="font-size: 30px;"class="nav-link active" href="/home">Home</a>
                 </li>
                 <li class="nav-item m-auto">
-                    <a style="font-size: 30px;" class="nav-link active" href="/cars/list">Автомобили</a>
+                    <a style="font-size: 30px;" class="nav-link active" href="/cars/list">Cars</a>
                 </li>
             </ul>
 
             <form class="form-inline my-2 my-lg-0">
                 <a class="btn btn-light btn-sm ml-3" href="/logout">
-                    <i class="fa fa-shopping-cart"></i> Одјави се
+                    <i class="fa fa-shopping-cart"></i> Logout
                 </a>
             </form>
         </div>
@@ -45,8 +45,8 @@
 </nav>
 <section class="jumbotron text-center">
     <div class="container">
-        <h3 class="jumbotron-heading">Кошничка на
-            Корисник: <th:block th:if="${#request.getRemoteUser()!=null}"
+        <h3 class="jumbotron-heading">Cart for user:
+            <th:block th:if="${#request.getRemoteUser()!=null}"
                                 th:text="${#request.getRemoteUser()}"></th:block>
         </h3>
     </div>
@@ -63,11 +63,11 @@
                 <table class="table table-striped">
                     <thead>
                     <tr>
-                        <th scope="col">Автомобил</th>
-                        <th scope="col">Цена</th>
-                        <th scope="col">Слика</th>
-                        <th scope="col">Датум</th>
-                        <th scope="col">Резервација</th>
+                        <th scope="col">Car</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Image</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Reservation</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -77,11 +77,11 @@
                         <td><img th:src="${product.getImage()}" width="180px" height="120px"/></td>
                         <td>
                             <form method="GET" th:action="@{'shopping-cart/add/date/{id}' (id=${product.getId()})}">
-                                <input type="submit" class="btn btn-info" value="Одбери датум">
+                                <input type="submit" class="btn btn-info" value="Choose Date">
                             </form>
                         </td>
                         <td><form th:action="@{'/reservation'}" th:method="POST">
-                            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-trash">Резервирај автомобил</i>
+                            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-trash">Reserve Car</i>
                             </button>
                         </form>
                         </td>

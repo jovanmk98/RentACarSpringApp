@@ -3,7 +3,7 @@
 
 <head>
   <link th:href="@{/styles/cssfiles/cars.css}" rel="stylesheet"/>
-  <title>Автомобили</title>
+  <title>Cars</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -35,17 +35,17 @@
         </li>
         <li class="nav-item" sec:authorize="isAuthenticated()">
           <a class="btn btn-success btn-sm ml-3" href="/shopping-cart">
-            <i class="fa fa-shopping-cart"></i> Кошничка
+            <i class="fa fa-shopping-cart"></i> Cart
           </a>
         </li>
         <li class="nav-item" sec:authorize="isAuthenticated()">
           <a class="btn btn-light btn-sm ml-3" href="/logout">
-            <i class="fa fa-shopping-cart"></i> Одјави се
+            <i class="fa fa-shopping-cart"></i> Logout
           </a>
         </li>
         <li class="nav-item" sec:authorize="!isAuthenticated()">
           <a class="btn btn-light btn-sm ml-3" href="/login">
-            <i class="fa fa-shopping-cart"></i> Најави се
+            <i class="fa fa-shopping-cart"></i> Login
           </a>
         </li>
       </ul>
@@ -56,23 +56,23 @@
 <br>
 <div>
   <th:block sec:authorize="hasRole('ROLE_ADMIN')">
-    <a href="/cars/addCar" class="btn btn-dark">Додај нов автомобил</a>
+    <a href="/cars/addCar" class="btn btn-dark">Add New Car</a>
   </th:block>
 </div>
 <div id="container">
   <div id="content">
     <table>
       <tr>
-        <th>Име</th>
-        <th>Цена</th>
-        <th>Година</th>
-        <th>Коњски сили</th>
-        <th>Слика</th>
-        <th>Операции</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Year</th>
+        <th>Horse Power</th>
+        <th>Image</th>
+        <th>Operations</th>
       </tr>
 
       <form th:object="${car}" th:action="@{/cars/list}" method="get">
-        <input placeholder="Пребарај автомобил" type="search" name="search" id="search" class="i-search" th:value="${search}"/>
+        <input placeholder="Search for a car" type="search" name="search" id="search" class="i-search" th:value="${search}"/>
       <tr th:each="car : ${carsList}">
         <td th:text="${car.getName()}"></td>
         <td th:text="${car.getPrice()}"></td>
@@ -82,15 +82,15 @@
         <td>
           <th:block sec:authorize="hasRole('ROLE_ADMIN')">
             <form th:action="@{'/cars/delete/{id}' (id=${car.getId()})}" th:method="DELETE">
-              <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash">Избриши</i></button>
+              <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash">Delete</i></button>
             </form>
           </th:block>
           <th:block sec:authorize="hasRole('ROLE_ADMIN')">
             <a th:href="@{'/cars/edit-form/{id}' (id=${car.getId()})}"
-               class="btn btn-sm btn-info"><i class="fa fa-trash">Измени</i></a>
+               class="btn btn-sm btn-info"><i class="fa fa-trash">Edit</i></a>
           </th:block>
           <form th:action="@{'/shopping-cart/add-product/{id}' (id=${car.getId()})}" th:method="POST">
-            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-trash">Резервирај автомобил</i>
+            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-trash">Reserve Car</i>
             </button>
           </form>
         </td>

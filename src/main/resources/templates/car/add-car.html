@@ -22,58 +22,58 @@
         <div class="col-md-5">
             <form action="/cars/add" method="POST">
                 <div class="form-group">
-                    <label for="name">Име</label>
+                    <label for="name">Name</label>
                     <input type="text"
                            class="form-control"
                            th:value="${car.getName()}"
                            id="name"
                            name="name"
-                           placeholder="Внеси име">
+                           placeholder="Enter name">
                 </div>
                 <div class="form-group">
-                    <label for="name">Цена</label>
+                    <label for="name">Price</label>
                     <input type="text"
                            class="form-control"
                            th:value="${car.getPrice()}"
                            id="price"
                            name="price"
-                           placeholder="Внеси Цена">
+                           placeholder="Enter Price">
                 </div>
                 <div class="form-group">
-                    <label for="name">Година</label>
+                    <label for="name">Year</label>
                     <input type="text"
                            class="form-control"
                            th:value="${car.getYear()}"
                            id="year"
                            name="year"
-                           placeholder="Внеси година">
+                           placeholder="Enter Year">
                 </div>
                 <div class="form-group">
-                    <label for="name">Коњски сили</label>
+                    <label for="name">Horse Power</label>
                     <input type="text"
                            class="form-control"
                            th:value="${car.getHorsePower()}"
                            id="horsePower"
                            name="horsePower"
-                           placeholder="Внеси коњски сили">
+                           placeholder="Enter Horse Power">
                 </div>
                 <div class="form-group">
-                    <label for="name">Слика</label>
+                    <label for="name">Image</label>
                     <input type="text"
                            class="form-control"
                            th:value="${car.getImage()}"
                            id="image"
                            name="image"
-                           placeholder="Внеси слика">
+                           placeholder="Enter Image">
                 </div>
                 <div class="form-group">
-                    <label for="carRental">Продавница</label>
+                    <label for="carRental">Car Shop</label>
                     <select id="carRental" name="carRental">
                         <option th:each="carRental:${carRentalShops}" th:text="${carRental.getName()}" th:value="${carRental.getId()}"></option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary">Поднеси</button>
-                <a type="button" class="btn btn-primary" href="/cars/list">Назад</a>
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a type="button" class="btn btn-primary" href="/cars/list">Back</a>
             </form>
         </div>
     </div>

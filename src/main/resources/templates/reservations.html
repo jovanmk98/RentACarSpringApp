@@ -25,7 +25,7 @@
   <div class="container">
     <div class="collapse navbar-collapse justify-content-end" id="navbarsExampleDefault">
       <ul class="navbar-nav m-auto">
-        <span style="font-size: 30px" class="navbar-brand"><a style="font-size: 40px" class="btn btn-dark" href="/home">Почетна</a></span>
+        <span style="font-size: 30px" class="navbar-brand"><a style="font-size: 40px" class="btn btn-dark" href="/home">Home</a></span>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li class="nav-item" sec:authorize="isAuthenticated()">
@@ -36,12 +36,12 @@
         </li>
         <li class="nav-item" sec:authorize="isAuthenticated()">
           <a class="btn btn-light btn-sm ml-3" href="/logout">
-            <i class="fa fa-shopping-cart"></i> Одјави се
+            <i class="fa fa-shopping-cart"></i> Logout
           </a>
         </li>
         <li class="nav-item" sec:authorize="!isAuthenticated()">
           <a class="btn btn-light btn-sm ml-3" href="/login">
-            <i class="fa fa-shopping-cart"></i> Најави се
+            <i class="fa fa-shopping-cart"></i> Login
           </a>
         </li>
       </ul>
@@ -53,13 +53,13 @@
   <div id="content">
     <table>
       <tr>
-        <th>Име</th>
-        <th>Презиме</th>
-        <th>Автомобил</th>
-        <th>Вкупна цена</th>
-        <th>Датум од</th>
-        <th>Датум до</th>
-        <th>Статус</th>
+        <th>Name</th>
+        <th>LastName</th>
+        <th>Car</th>
+        <th>Total price</th>
+        <th>Date from</th>
+        <th>Date to</th>
+        <th>Status</th>
       </tr>
       <tr th:each="reservation : ${reservations}">
         <td th:text="${reservation.getName()}"></td>

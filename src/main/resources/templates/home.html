@@ -3,7 +3,7 @@
 <head>
   <link th:href="@{/styles/cssfiles/home.css}" rel="stylesheet"/>
   <meta charset="utf-8">
-  <title>Автосалон</title>
+  <title>АвтоCar Shop</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -32,17 +32,17 @@
         </li>
         <li class="nav-item" sec:authorize="isAuthenticated()">
           <a class="btn btn-success btn-sm ml-3" href="/shopping-cart">
-            <i class="fa fa-shopping-cart"></i> Кошничка
+            <i class="fa fa-shopping-cart"></i> Cart
           </a>
         </li>
         <li class="nav-item" sec:authorize="isAuthenticated()">
           <a class="btn btn-light btn-sm ml-3" href="/logout">
-            <i class="fa fa-shopping-cart"></i> Одјави се
+            <i class="fa fa-shopping-cart"></i> Logout
           </a>
         </li>
         <li class="nav-item" sec:authorize="!isAuthenticated()">
           <a class="btn btn-light btn-sm ml-3" href="/login">
-            <i class="fa fa-shopping-cart"></i> Најави се
+            <i class="fa fa-shopping-cart"></i> Login
           </a>
         </li>
       </ul>
@@ -54,13 +54,13 @@
     <table>
       <tr>
         <th><a href="/cars/list" class="btn btn-sm btn-dark">
-          <div style="font-size: 25px">Автомобили</div>
+          <div style="font-size: 25px">Cars</div>
         </a></th>
         <th><a href="/car-rental/list" class="btn btn-sm btn-dark">
-          <div style="font-size: 25px">Продавници</div>
+          <div style="font-size: 25px">Car Rent Shops</div>
         </a></th>
           <th><a href="/reservation" class="btn btn-sm btn-dark">
-            <div style="font-size: 25px">Резервации</div>
+            <div style="font-size: 25px">Reservations</div>
           </a></th>
       </tr>
     </table>

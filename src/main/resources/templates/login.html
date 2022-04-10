@@ -16,23 +16,23 @@
 <body>
 <div class="container">
   <form class="form-signin mt-xl-5" method="post" action="/login">
-    <h2 class="form-signin-heading">Најави се</h2>
+    <h2 class="form-signin-heading">Login</h2>
     <p>
-      <label for="username" class="sr-only">Емаил</label>
-      <input type="text" id="username" name="username" class="form-control" placeholder="Емаил" required=""
+      <label for="username" class="sr-only"> Email</label>
+      <input type="text" id="username" name="username" class="form-control" placeholder="Email" required=""
              autofocus="">
     </p>
     <p>
-      <label for="password" class="sr-only">Лозинка</label>
-      <input type="password" id="password" name="password" class="form-control" placeholder="Лозинка"
+      <label for="password" class="sr-only">Password</label>
+      <input type="password" id="password" name="password" class="form-control" placeholder="Password"
              required="">
     </p>
     <div>
       <div th:text="${param.error}" class="text-danger"></div>
     </div>
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Најави се</button>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
   </form>
-  <a href="/register" class="btn btn-block btn-light">Регистрирај се</a>
+  <a href="/register" class="btn btn-block btn-light">Register</a>
 </div>
 </body>
 </html>

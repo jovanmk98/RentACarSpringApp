@@ -23,34 +23,34 @@
     <div class="col-md-5">
       <form th:action="@{'/car-rental/update/{id}' (id=${carRental?.getId()})}" method="POST">
         <div class="form-group">
-          <label for="name">Име</label>
+          <label for="name">Name</label>
           <input type="text"
                  class="form-control"
                  th:value="${carRental.getName()}"
                  id="name"
                  name="name"
-                 placeholder="Внеси име">
+                 placeholder="Enter name">
         </div>
         <div class="form-group">
-          <label for="name">Град</label>
+          <label for="name">City</label>
           <input type="text"
                  class="form-control"
                  th:value="${carRental.getCity()}"
                  id="city"
                  name="city"
-                 placeholder="Внеси град">
+                 placeholder="Enter City">
         </div>
         <div class="form-group">
-          <label for="name">Адреса</label>
+          <label for="name">Address</label>
           <input type="text"
                  class="form-control"
                  th:value="${carRental.getAddress()}"
                  id="address"
                  name="address"
-                 placeholder="Внеси локација">
+                 placeholder="Enter the address">
         </div>
-        <button type="submit" class="btn btn-primary">Поднеси</button>
-        <a type="button" class="btn btn-primary" href="/car-rental/list">Назад</a>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <a type="button" class="btn btn-primary" href="/car-rental/list">Back</a>
       </form>
     </div>
   </div>
