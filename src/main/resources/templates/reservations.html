@@ -65,7 +65,7 @@
         <td th:text="${reservation.getName()}"></td>
         <td th:text="${reservation.getLastname()}"></td>
         <td th:text="${reservation.getCar().getName()}"></td>
-        <td th:text="${reservation.getTotalPrice()}"></td>
+        <td th:text="${reservation.getTotalPrice()}">$</td>
         <td th:text="${reservation.getDateFrom()}"></td>
         <td th:text="${reservation.getDateTo()}"></td>
         <td th:text="${reservation.getReservationStatus()}"></td>
